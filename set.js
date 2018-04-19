@@ -26,7 +26,7 @@ class Set {
         if(Array.isArray(param)){
             let sub_box = this._box.concat(param);
             sub_box.forEach((e)=>{
-                !this.has(e) && this._box.push(param)
+                !this.has(e) && this._box.push(e)
             })
         }
         else{
@@ -83,13 +83,9 @@ class Set {
     //  * @returns {Set}
     //  */
     intersection(param) {
-        // let fullSet = param.values.concat(this.values),
         let megaSet = new Set;
         param.values.forEach((wookie)=>{
-            if(this.has(wookie)){
-                megaSet._box.push(wookie)
-                
-            }
+            this.has(wookie) && megaSet._box.push(wookie)
         })
         return megaSet;
     }
@@ -99,18 +95,36 @@ class Set {
     //  * @param {Set} set
     //  * @returns {Set}
     //  */
-    // difference() {}
+    difference(param) {
+        let megaSet = new Set;
+        this.values.forEach((wookie)=>{
+            !param.has(wookie) && megaSet.add(wookie)
+        })
+        return megaSet
+    }
 
     // /**
     //  * Возвращает `true` если сет содержит в себе все элементы из друого сета
     //  * @param {Set} set
     //  * @returns {boolean}
     //  */
-    // isSubset() {}
+    isSubset(param) {
+        let counter = 0;
+
+        this.values.forEach((wookie)=>{
+
+            param.has(wookie) && counter++
+        })
+
+        if(counter === this.size)
+            return true
+        return false
+    }
 };
 
 joe = new Set;
 sam = new Set;
+dick = new Set;
 
 joe.add('t-rex')
 joe.add('dickus')
@@ -123,8 +137,16 @@ sam.add('duck')
 sam.add('spider-duck')
 sam.add('t-rex')
 sam.add('мишаня')
-sam.add('salmon')
+sam.add('salmonella')
+
+dick.add('duck')
+dick.add('spider-duck')
+dick.add('t-rex')
+dick.add('мишаня')
+dick.add('salmon')
+dick.add('eagle')
+dick.add('lizzard')
 
 
-willy = sam.intersection(joe)
-console.log(willy)
+willy = joe.difference(sam)
+console.log(sam.isSubset(dick))
